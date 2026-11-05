@@ -1,0 +1,282 @@
+[
+  {
+    "name": "subfinder",
+    "command": "subfinder -d <domain> -all -silent",
+    "timeout": 90,
+    "phase": "subdomain",
+    "root": false
+  },
+  {
+    "name": "assetfinder",
+    "command": "assetfinder --subs-only <domain>",
+    "timeout": 120,
+    "phase": "subdomain",
+    "root": false
+  },
+  {
+    "name": "amass_passive",
+    "command": "amass enum -passive -d <domain> -timeout 5",
+    "timeout": 120,
+    "phase": "subdomain",
+    "root": false
+  },
+  {
+    "name": "findomain",
+    "command": "findomain -t <domain> -q",
+    "timeout": 120,
+    "phase": "subdomain",
+    "root": false
+  },
+  {
+    "name": "crtsh",
+    "command": "curl -s 'https://crt.sh/?q=%25.<domain>&output=json'",
+    "timeout": 60,
+    "phase": "subdomain",
+    "root": false
+  },
+  {
+    "name": "httpx_probe",
+    "command": "httpx -l <subdomains_file> -silent -title -tech-detect -status-code",
+    "timeout": 300,
+    "phase": "probe",
+    "root": false
+  },
+  {
+    "name": "httprobe",
+    "command": "cat <subdomains_file> | httprobe -c 50",
+    "timeout": 180,
+    "phase": "probe",
+    "root": false
+  },
+  {
+    "name": "whatweb",
+    "command": "whatweb -a 3 <url>",
+    "timeout": 120,
+    "phase": "tech",
+    "root": false
+  },
+  {
+    "name": "wafw00f",
+    "command": "wafw00f <url>",
+    "timeout": 60,
+    "phase": "tech",
+    "root": false
+  },
+  {
+    "name": "nuclei_safe",
+    "command": "nuclei -u <url> -severity info,low,medium -silent",
+    "timeout": 600,
+    "phase": "vuln",
+    "root": false
+  },
+  {
+    "name": "nikto",
+    "command": "nikto -h <url> -Tuning 123456789",
+    "timeout": 600,
+    "phase": "vuln",
+    "root": false
+  },
+  {
+    "name": "gobuster_dir",
+    "command": "gobuster dir -u <url> -w /usr/share/seclists/Discovery/Web-Content/common.txt -t 30 -q",
+    "timeout": 600,
+    "phase": "content",
+    "root": false
+  },
+  {
+    "name": "ffuf_dir",
+    "command": "ffuf -u <url>/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -mc 200,301,302,403 -t 30 -s",
+    "timeout": 600,
+    "phase": "content",
+    "root": false
+  },
+  {
+    "name": "feroxbuster",
+    "command": "feroxbuster -u <url> -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -t 30 -q",
+    "timeout": 600,
+    "phase": "content",
+    "root": false
+  },
+  {
+    "name": "dirsearch",
+    "command": "dirsearch -u <url> -e php,html,js,json,txt,bak --exclude-status 404 -q",
+    "timeout": 600,
+    "phase": "content",
+    "root": false
+  },
+  {
+    "name": "gau",
+    "command": "gau <domain> --threads 5",
+    "timeout": 180,
+    "phase": "urls",
+    "root": false
+  },
+  {
+    "name": "waybackurls",
+    "command": "waybackurls <domain>",
+    "timeout": 180,
+    "phase": "urls",
+    "root": false
+  },
+  {
+    "name": "katana",
+    "command": "katana -u <url> -silent -d 3 -jc",
+    "timeout": 300,
+    "phase": "crawl",
+    "root": false
+  },
+  {
+    "name": "gospider",
+    "command": "gospider -s <url> -d 3 -c 10 --quiet",
+    "timeout": 300,
+    "phase": "crawl",
+    "root": false
+  },
+  {
+    "name": "arjun",
+    "command": "arjun -u <url> -oT /dev/stdout 2>/dev/null",
+    "timeout": 300,
+    "phase": "params",
+    "root": false
+  },
+  {
+    "name": "paramspider",
+    "command": "paramspider -d <domain> --quiet",
+    "timeout": 300,
+    "phase": "params",
+    "root": false
+  },
+  {
+    "name": "dalfox",
+    "command": "dalfox url <url> --silence",
+    "timeout": 600,
+    "phase": "xss",
+    "root": false
+  },
+  {
+    "name": "xsstrike",
+    "command": "xsstrike -u <url> --crawl",
+    "timeout": 600,
+    "phase": "xss",
+    "root": false
+  },
+  {
+    "name": "sqlmap",
+    "command": "sqlmap -u <url> --batch --crawl=2 --forms --level=2 --risk=1",
+    "timeout": 900,
+    "phase": "sqli",
+    "root": false
+  },
+  {
+    "name": "commix",
+    "command": "commix --url=<url> --batch",
+    "timeout": 600,
+    "phase": "cmdi",
+    "root": false
+  },
+  {
+    "name": "corsy",
+    "command": "corsy -u <url>",
+    "timeout": 180,
+    "phase": "cors",
+    "root": false
+  },
+  {
+    "name": "crlfuzz",
+    "command": "crlfuzz -u <url> -s",
+    "timeout": 180,
+    "phase": "crlf",
+    "root": false
+  },
+  {
+    "name": "openredirex",
+    "command": "openredirex -u <url> -k",
+    "timeout": 300,
+    "phase": "redirect",
+    "root": false
+  },
+  {
+    "name": "subjack",
+    "command": "subjack -w <subdomains_file> -t 100 -ssl -timeout 30 -o /dev/stdout",
+    "timeout": 300,
+    "phase": "takeover",
+    "root": false
+  },
+  {
+    "name": "nuclei_takeover",
+    "command": "nuclei -l <subdomains_file> -t http/takeovers/ -silent",
+    "timeout": 300,
+    "phase": "takeover",
+    "root": false
+  },
+  {
+    "name": "nuclei_exposure",
+    "command": "nuclei -u <url> -t exposures/ -silent",
+    "timeout": 600,
+    "phase": "exposure",
+    "root": false
+  },
+  {
+    "name": "nuclei_misconfig",
+    "command": "nuclei -u <url> -t misconfiguration/ -silent",
+    "timeout": 600,
+    "phase": "misconfig",
+    "root": false
+  },
+  {
+    "name": "nuclei_cves",
+    "command": "nuclei -u <url> -t cves/ -severity critical,high -silent",
+    "timeout": 900,
+    "phase": "cves",
+    "root": false
+  },
+  {
+    "name": "gf_patterns",
+    "command": "cat <urls_file> | gf ssrf,xss,sqli,redirect,lfi,rce,idor | head -100",
+    "timeout": 120,
+    "phase": "gf",
+    "root": false
+  },
+  {
+    "name": "gf_sqli",
+    "command": "cat <urls_file> | gf sqli | head -50",
+    "timeout": 60,
+    "phase": "gf",
+    "root": false
+  },
+  {
+    "name": "gf_xss",
+    "command": "cat <urls_file> | gf xss | head -50",
+    "timeout": 60,
+    "phase": "gf",
+    "root": false
+  },
+  {
+    "name": "gf_ssrf",
+    "command": "cat <urls_file> | gf ssrf | head -50",
+    "timeout": 60,
+    "phase": "gf",
+    "root": false
+  },
+  {
+    "name": "gf_redirect",
+    "command": "cat <urls_file> | gf redirect | head -50",
+    "timeout": 60,
+    "phase": "gf",
+    "root": false
+  },
+  {
+    "name": "uro_urls",
+    "command": "cat <urls_file> | uro | head -500",
+    "timeout": 60,
+    "phase": "urls",
+    "root": false
+  },
+  {
+    "name": "anew_urls",
+    "command": "cat <urls_file> | anew /tmp/ftjiyana_urls.txt",
+    "timeout": 60,
+    "phase": "urls",
+    "root": false
+  }
+]
